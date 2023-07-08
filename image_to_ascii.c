@@ -65,7 +65,7 @@ int main(int argc, char** argv)
     original_image = stbi_load(input_filepath, &width, &height, &channels, 0);
 
     if (original_image == NULL) {
-        printf("Could not load image.\n");
+        printf("Could not load image\n");
         return EXIT_FAILURE;
     }
 
@@ -91,7 +91,7 @@ int main(int argc, char** argv)
     unsigned char* resized_image = malloc(desired_width * desired_height * channels);
 
     if (resized_image == NULL) {
-        printf("Could not allocate memory for the resized image.\n");
+        printf("Could not allocate memory for the resized image\n");
         return EXIT_FAILURE;
     }
     
@@ -109,11 +109,11 @@ int main(int argc, char** argv)
 
     if (file_pointer == NULL)
     {
-       printf("Error! Could not create an output file.\n");
+       printf("Could not create an output file\n");
        return EXIT_FAILURE;
     }
 
-    fprintf(file_pointer, "Input: %s \t Resolution: [%dx%d]\n", input_filepath, desired_width, desired_height);
+    fprintf(file_pointer, "Input: %s   Output: %s   Resolution: [%dx%d]\n", input_filepath, output_filepath, desired_width, desired_height);
 
     for (int i = 0; i < desired_height; i++) {
         for (int j = 0; j < desired_width; j++)
