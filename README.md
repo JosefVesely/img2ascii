@@ -18,7 +18,7 @@ image_to_ascii.exe input [output] [width]
 
 Output:
 ```
-images/c.png [40x45]
+Input: images/c.png   Output: c.txt   Resolution: [50x57]
                  `.::.`                 
                `.-::::-.`               
              `^-::::::::-^`             

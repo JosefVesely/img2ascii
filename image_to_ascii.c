@@ -34,9 +34,9 @@ int main(int argc, char** argv)
 
     if (argc == 1) {  // Usage
         printf("Usage: image_to_ascii.exe input [output] [width]\n");
-        printf("   input: file path of the input image\n");
+        printf("   input: file path of the image to convert\n");
         printf("   output: file path of the output file (optional)\n");
-        printf("   width: desired width of the output file (optional)\n");
+        printf("   width: width of output (optional)\n");
         return EXIT_FAILURE;
     }
 
@@ -69,10 +69,10 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
-    // Check if is the input OK
+    // Check if the width is a valid value
 
     if (resize_image && !(desired_width > 0 && desired_width <= width)) {
-        printf("'width' should be an integer between 1 and %d (the original image width)\n", width);
+        printf("Argument \"width\" must be an integer between 1 and %d (the original image width)\n", width);
         return EXIT_FAILURE;
     }
     
@@ -91,14 +91,14 @@ int main(int argc, char** argv)
     unsigned char* resized_image = malloc(desired_width * desired_height * channels);
 
     if (resized_image == NULL) {
-        printf("Error! Could not allocate memory for the resized image.\n");
+        printf("Could not allocate memory for the resized image.\n");
         return EXIT_FAILURE;
     }
     
     stbir_resize_uint8(original_image, width, height, width*channels, resized_image, desired_width, desired_height, desired_width*channels, channels);
     stbi_image_free(original_image);
 
-    // Create output file
+    // Create an output file
 
     FILE *file_pointer = NULL;
 
@@ -113,8 +113,7 @@ int main(int argc, char** argv)
        return EXIT_FAILURE;
     }
 
-    fprintf(file_pointer, "%s [%dx%d]\n", input_filepath, desired_width, desired_height);
-
+    fprintf(file_pointer, "Input: %s \t Resolution: [%dx%d]\n", input_filepath, desired_width, desired_height);
 
     for (int i = 0; i < desired_height; i++) {
         for (int j = 0; j < desired_width; j++)
@@ -127,8 +126,6 @@ int main(int argc, char** argv)
         }
         fprintf(file_pointer, "\n");
     }
-
-    // Free memory
 
     fclose(file_pointer);
     stbi_image_free(resized_image);
