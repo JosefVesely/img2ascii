@@ -8,27 +8,15 @@
 #include "stb_image/stb_image_write.h"
 #include "stb_image/stb_image_resize.h"
 
-#define FILENAME_BUFFER_SIZE 256
-const char* SYMBOLS = "@#$?!~:-.^` ";
-
-
-int get_pixel_intensity(unsigned char* image, int image_width, int channels, int x, int y)
-{
-    unsigned char* pixel_offset = image + (image_width * x + y) * channels;
-    unsigned char r = pixel_offset[0];
-    unsigned char g = pixel_offset[1];
-    unsigned char b = pixel_offset[2];
-
-    return r + g + b;
-}
+char* symbols = "@#$?!~:-.^` ";
 
 
 int main(int argc, char** argv)
 {
     // Parse arguments from the command line
 
-    char input_filepath[FILENAME_BUFFER_SIZE];
-    char output_filepath[FILENAME_BUFFER_SIZE];
+    char* input_filepath;
+    char* output_filepath;
     int desired_width;
     bool resize_image = true;
 
@@ -37,34 +25,40 @@ int main(int argc, char** argv)
         printf("   input: file path of the image to convert\n");
         printf("   output: file path of the output file (optional)\n");
         printf("   width: width of output (optional)\n");
+        printf("   chars: characters to be used (optional)\n");
         return EXIT_FAILURE;
     }
 
     if (argc >= 2) {  // input
-        strcpy(input_filepath, argv[1]);
-        input_filepath[strcspn(input_filepath, "\n")] = 0;  // Remove the newline character
+        input_filepath = argv[1];
     }
 
     if (argc >= 3) {  // output
-        strcpy(output_filepath, argv[2]);
-        output_filepath[strcspn(output_filepath, "\n")] = 0;
+        output_filepath = argv[2];
     }
-    else
-        strcpy(output_filepath, "output.txt");
+    else {
+        output_filepath = "output.txt";
+    }
 
-    if (argc >= 4)  // width
+    if (argc >= 4) {  // width
         desired_width = atoi(argv[3]);
-    else
+    }
+    else {
         resize_image = false;
+    }
 
-    // Load the image
+    if (argc >= 5) {
+        symbols = argv[4];
+    }
 
-    int width, height, channels;
-    unsigned char* original_image = NULL;
+    // Load the image in grayscale
 
-    original_image = stbi_load(input_filepath, &width, &height, &channels, 0);
+    int width, height;
+    unsigned char* image = NULL;
 
-    if (original_image == NULL) {
+    image = stbi_load(input_filepath, &width, &height, NULL, STBI_grey);
+
+    if (image == NULL) {
         printf("Could not load image\n");
         return EXIT_FAILURE;
     }
@@ -80,55 +74,42 @@ int main(int argc, char** argv)
 
     int desired_height;
 
-    if (!resize_image) {
+    if (resize_image) {
+        desired_height = height / (width / (float)desired_width);
+        stbir_resize_uint8(image, width, height, width, image, desired_width, desired_height, desired_width, STBI_grey);
+    }
+    else {
         desired_width = width;
         desired_height = height;
     }
-    else {
-        desired_height = height / (width / desired_width);
-    }
-    
-    unsigned char* resized_image = malloc(desired_width * desired_height * channels);
-
-    if (resized_image == NULL) {
-        printf("Could not allocate memory for the resized image\n");
-        return EXIT_FAILURE;
-    }
-    
-    stbir_resize_uint8(original_image, width, height, width*channels, resized_image, desired_width, desired_height, desired_width*channels, channels);
-    stbi_image_free(original_image);
 
     // Create an output file
 
     FILE *file_pointer = NULL;
 
-    if (output_filepath == NULL)
-        file_pointer = fopen("output.txt", "w");
-    else 
-        file_pointer = fopen(output_filepath, "w");
+    file_pointer = fopen(output_filepath, "w");
 
-    if (file_pointer == NULL)
-    {
+    if (file_pointer == NULL) {
        printf("Could not create an output file\n");
        return EXIT_FAILURE;
     }
 
-    fprintf(file_pointer, "Input: %s   Output: %s   Resolution: [%dx%d]\n", input_filepath, output_filepath, desired_width, desired_height);
+    fprintf(file_pointer, "Input: %s  Output: %s  Resolution: [%dx%d]\n", input_filepath, output_filepath, desired_width, desired_height);
 
-    for (int i = 0; i < desired_height; i++) {
-        for (int j = 0; j < desired_width; j++)
-        {
-            int intensity = get_pixel_intensity(resized_image, desired_width, channels, i, j);
+    for (int i = 0; i < desired_height*desired_width; i++) {
+        int intensity = image[i];
 
-            int character_index = intensity / (3*255 / (strlen(SYMBOLS)-1));
+        int character_index = intensity / (255 / (strlen(symbols)-1));
 
-            fprintf(file_pointer, "%c", SYMBOLS[character_index]);
+        fprintf(file_pointer, "%c", symbols[character_index]);
+
+        if ((i+1) % desired_width == 0) {
+            fprintf(file_pointer, "\n");
         }
-        fprintf(file_pointer, "\n");
     }
 
     fclose(file_pointer);
-    stbi_image_free(resized_image);
+    stbi_image_free(image);
 
     return EXIT_SUCCESS;
 }
