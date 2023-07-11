@@ -7,12 +7,12 @@
 ## Usage
 
 ```
-Usage: image_to_ascii.exe --input image.png [--output ascii.txt] [--width 50] [--chars \"@#?|:. "]
+Usage: image_to_ascii.exe --input image.png [--output ascii.txt] [--width 50] [--chars "@#?|:. "]
   --help: shows this message
   --input {image.png}: input file path
-  --output {ascii.txt}: output file path, \"output.txt\" if none (optional)
+  --output {ascii.txt}: output file path, "output.txt" if none (optional)
   --width {50}: width of output (optional)
-  --chars {\"@#?|:. \"}: characters to be used (optional)
+  --chars {"@#?|:. "}: characters to be used (optional)
 ```
 
 ## Example
