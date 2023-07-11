@@ -47,7 +47,7 @@ int main(int argc, char** argv)
         resize_image = false;
     }
 
-    if (argc >= 5) {
+    if (argc >= 5) {  // chars
         symbols = argv[4];
     }
 
