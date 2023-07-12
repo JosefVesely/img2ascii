@@ -48,7 +48,7 @@ int main(int argc, char** argv)
         {0, 0, 0, 0}
     };
 
-    int c, option_index;
+    int c;
     char *short_options = "hi:o::w::c::";
 
     while ((c = getopt_long(argc, argv, short_options, long_options, NULL)) != EOF)
@@ -86,14 +86,14 @@ int main(int argc, char** argv)
     image = stbi_load(input_filepath, &width, &height, NULL, STBI_grey);
 
     if (image == NULL) {
-        printf("Could not load image\n");
+        fprintf(stderr, "Could not load image\n");
         return EXIT_FAILURE;
     }
 
     // Check if the width is a valid value
 
     if (resize_image && !(desired_width > 0 && desired_width <= width)) {
-        printf("Argument \"width\" must be an integer between 1 and %d (the original image width)\n", width);
+        fprintf(stderr, "Argument \"width\" must be an integer between 1 and %d (the original image width)\n", width);
         return EXIT_FAILURE;
     }
     
@@ -117,7 +117,7 @@ int main(int argc, char** argv)
     file_pointer = fopen(output_filepath, "w");
 
     if (file_pointer == NULL) {
-       printf("Could not create an output file\n");
+       fprintf(stderr, "Could not create an output file\n");
        return EXIT_FAILURE;
     }
 
@@ -137,10 +137,10 @@ int main(int argc, char** argv)
 
         int character_index = intensity / (255 / (float)(characters_count - 1));
 
-        fprintf(file_pointer, "%c", characters[character_index]);
+        fputc(characters[character_index], file_pointer);
 
         if ((i+1) % desired_width == 0) {
-            fprintf(file_pointer, "\n");
+            fputc('\n', file_pointer);
         }
     }
 
