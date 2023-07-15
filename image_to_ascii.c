@@ -13,12 +13,14 @@ char* characters = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!
 
 void print_usage(void)
 {
-    printf("Usage: image_to_ascii.exe --input image.png [--output ascii.txt] [--width 50] [--chars \"@#?|:. \"]\n");
-    printf("  --help: shows this message\n");
-    printf("  --input {image.png}: input file path\n");
-    printf("  --output {ascii.txt}: output file path, \"output.txt\" if none (optional)\n");
-    printf("  --width {50}: width of output (optional)\n");
-    printf("  --chars {\"@#?|:. \"}: characters to be used (optional)\n");
+    printf(
+        "Usage: image_to_ascii.exe --input=image.png [--output=ascii.txt] [--width=50] [--chars=\"@#?|:. \"]\n"
+        "  --help: shows this message\n"
+        "  --input {image.png}: input file path\n"
+        "  --output {ascii.txt}: output file path, \"output.txt\" if none (optional)\n"
+        "  --width {50}: width of output (optional)\n"
+        "  --chars {\"@#?|:. \"}: characters to be used (optional)\n"
+    );
 }
 
 
@@ -40,16 +42,16 @@ int main(int argc, char** argv)
 
     struct option long_options[] =
     {
-        {"help", no_argument, NULL, 'h'},
-        {"input", required_argument, NULL, 'i'},
-        {"output", optional_argument, NULL, 'o'},
-        {"width", optional_argument, NULL, 'w'},
-        {"chars", optional_argument, NULL, 'c'},
-        {0, 0, 0, 0}
+        { "help",   no_argument,       NULL, 'h' },
+        { "input",  required_argument, NULL, 'i' },
+        { "output", optional_argument, NULL, 'o' },
+        { "width",  optional_argument, NULL, 'w' },
+        { "chars",  optional_argument, NULL, 'c' },
+        { 0, 0, 0, 0 }
     };
 
     int c;
-    char *short_options = "hi:o::w::c::";
+    const char* short_options = "hi:o::w::c::";
 
     while ((c = getopt_long(argc, argv, short_options, long_options, NULL)) != EOF)
     {
@@ -96,6 +98,9 @@ int main(int argc, char** argv)
         fprintf(stderr, "Argument \"width\" must be an integer between 1 and %d (the original image width)\n", width);
         return EXIT_FAILURE;
     }
+    else if (desired_width == width) {
+        resize_image = false;
+    }
     
     // Resize the image
 
@@ -112,7 +117,7 @@ int main(int argc, char** argv)
 
     // Create an output file
 
-    FILE *file_pointer = NULL;
+    FILE* file_pointer = NULL;
 
     file_pointer = fopen(output_filepath, "w");
 
@@ -132,7 +137,7 @@ int main(int argc, char** argv)
         input_filepath, output_filepath, desired_width, desired_height, characters_count, characters
     );
 
-    for (int i = 0; i < desired_height*desired_width; i++) {
+    for (int i = 0; i < desired_height * desired_width; i++) {
         int intensity = image[i];
 
         int character_index = intensity / (255 / (float)(characters_count - 1));
