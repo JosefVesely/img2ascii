@@ -16,10 +16,10 @@ void print_usage(void)
     printf(
         "Usage: image_to_ascii.exe --input=image.png [--output=ascii.txt] [--width=50] [--chars=\"@#?|:. \"]\n"
         "  --help: shows this message\n"
-        "  --input {image.png}: input file path\n"
-        "  --output {ascii.txt}: output file path, \"output.txt\" if none (optional)\n"
-        "  --width {50}: width of output (optional)\n"
-        "  --chars {\"@#?|:. \"}: characters to be used (optional)\n"
+        "  --input={image.png}: input file path\n"
+        "  --output={ascii.txt}: output file path, \"output.txt\" if none (optional)\n"
+        "  --width={50}: width of output (optional)\n"
+        "  --chars={\"@#?|:. \"}: characters to be used (optional)\n"
     );
 }
 

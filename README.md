@@ -1,18 +1,21 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 # Image to ASCII
 
 **Convert images to ASCII art**
 
 *Library used for handling images: [STB Library](https://github.com/nothings/stb)*
 
+
 ## Usage
 
 ```
 Usage: image_to_ascii.exe --input=image.png [--output=ascii.txt] [--width=50] [--chars="@#?|:. "]
   --help: shows this message
-  --input {image.png}: input file path
-  --output {ascii.txt}: output file path, "output.txt" if none (optional)
-  --width {50}: width of output (optional)
-  --chars {"@#?|:. "}: characters to be used (optional)
+  --input={image.png}: input file path
+  --output={ascii.txt}: output file path, "output.txt" if none (optional)
+  --width={50}: width of output (optional)
+  --chars={"@#?|:. "}: characters to be used (optional)
 ```
 
 ## Example
@@ -75,7 +78,3 @@ Characters (10): " .:-=+*#%@"
 ```
 
 Find more character combinations: [Character representation of grey scale images](http://paulbourke.net/dataformats/asciiart/)
-
-## TODO:
-
-- Add support for alpha channel (transparent pixels are black)
