@@ -1,6 +1,6 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
 # Image to ASCII
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **Convert images to ASCII art**
 
@@ -10,17 +10,18 @@
 ## Usage
 
 ```
-Usage: image_to_ascii.exe --input=image.png [--output=ascii.txt] [--width=50] [--chars="@#?|:. "]
+Usage: img2ascii.exe --input=image.png [--output=ascii.txt] [--width=50] [--chars="@#?|:. "]
   --help: shows this message
   --input={image.png}: input file path
   --output={ascii.txt}: output file path, "output.txt" if none (optional)
   --width={50}: width of output (optional)
   --chars={"@#?|:. "}: characters to be used (optional)
+  --invert: inverts colors (optional)
 ```
 
 ## Example
 
-`image_to_ascii.exe --input=images/c.png --output=c.txt --width=40 --chars=" .:-=+*#%@"`
+`img2ascii.exe --input=images/c.png --output=c.txt --width=40 --chars=" .:-=+*#%@"`
 
 Output:
 

@@ -9,17 +9,18 @@
 #include "stb_image/stb_image_write.h"
 #include "stb_image/stb_image_resize.h"
 
-char* characters = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ";
+char characters[] = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ";
 
 void print_usage(void)
 {
     printf(
-        "Usage: image_to_ascii.exe --input=image.png [--output=ascii.txt] [--width=50] [--chars=\"@#?|:. \"]\n"
+        "Usage: img2ascii.exe --input=image.png [--output=ascii.txt] [--width=50] [--chars=\"@#?|:. \"]\n"
         "  --help: shows this message\n"
         "  --input={image.png}: input file path\n"
         "  --output={ascii.txt}: output file path, \"output.txt\" if none (optional)\n"
         "  --width={50}: width of output (optional)\n"
         "  --chars={\"@#?|:. \"}: characters to be used (optional)\n"
+        "  --invert: inverts colors\n"
     );
 }
 
@@ -37,21 +38,23 @@ int main(int argc, char** argv)
 
     char* input_filepath;
     char* output_filepath = "output.txt";
+    int invert_flag = 0;
+    int resize_image = false;
     int desired_width;
-    bool resize_image = false;
 
     struct option long_options[] =
     {
-        { "help",   no_argument,       NULL, 'h' },
-        { "input",  required_argument, NULL, 'i' },
-        { "output", optional_argument, NULL, 'o' },
-        { "width",  optional_argument, NULL, 'w' },
-        { "chars",  optional_argument, NULL, 'c' },
+        { "help",   no_argument,         NULL, 'h' },
+        { "input",  required_argument,   NULL, 'i' },
+        { "output", optional_argument,   NULL, 'o' },
+        { "width",  optional_argument,   NULL, 'w' },
+        { "chars",  optional_argument,   NULL, 'c' },
+        { "invert", no_argument, &invert_flag, 'n' },
         { 0, 0, 0, 0 }
     };
 
     int c;
-    const char* short_options = "hi:o::w::c::";
+    const char* short_options = "hi:o::w::c::n";
 
     while ((c = getopt_long(argc, argv, short_options, long_options, NULL)) != EOF)
     {
@@ -75,7 +78,9 @@ int main(int argc, char** argv)
             break;
 
         case 'c':
-            characters = optarg;
+            if (strlen(optarg) != 0) {
+                strcpy(characters, optarg);
+            }
             break;
         }
     }
@@ -124,6 +129,10 @@ int main(int argc, char** argv)
     if (file_pointer == NULL) {
        fprintf(stderr, "Could not create an output file\n");
        return EXIT_FAILURE;
+    }
+
+    if (invert_flag) {
+        strrev(characters);
     }
 
     int characters_count = strlen(characters);

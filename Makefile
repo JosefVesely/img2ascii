@@ -1,5 +1,8 @@
 CC=gcc
-FLAGS=-Wall
+CFLAGS=-Wall
 
-image_to_ascii: image_to_ascii.c 
-	$(CC) $(FLAGS) -o image_to_ascii image_to_ascii.c 
+all:
+	$(CC) $(CFLAGS) -o img2ascii image_to_ascii.c
+
+clean:
+	rm img2ascii.exe
