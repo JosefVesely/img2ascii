@@ -14,13 +14,14 @@ char characters[] = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i
 void print_usage(void)
 {
     printf(
-        "Usage: img2ascii.exe --input=image.png [--output=ascii.txt] [--width=50] [--chars=\"@#?|:. \"]\n"
-        "  --help: shows this message\n"
-        "  --input={image.png}: input file path\n"
-        "  --output={ascii.txt}: output file path, \"output.txt\" if none (optional)\n"
-        "  --width={50}: width of output (optional)\n"
-        "  --chars={\"@#?|:. \"}: characters to be used (optional)\n"
-        "  --invert: inverts colors\n"
+        "Usage: img2ascii.exe --input=image.png [--output=ascii.txt] [--width=50] [--chars=\"@#?|:. \"] \n"
+        "  --help: shows this message \n"
+        "  --input={image.png}: input file path \n"
+        "  --output={ascii.txt}: output file path, \"output.txt\" if none (optional) \n"
+        "  --width={50}: width of output (optional) \n"
+        "  --chars={\"@#?|:. \"}: characters to be used (optional) \n"
+        "  --print: print the output to the console \n"
+        "  --invert: inverts colors \n"
     );
 }
 
@@ -39,6 +40,7 @@ int main(int argc, char** argv)
     char* input_filepath;
     char* output_filepath = "output.txt";
     int invert_flag = 0;
+    int print_flag = 0;
     int resize_image = false;
     int desired_width;
 
@@ -50,6 +52,7 @@ int main(int argc, char** argv)
         { "width",  optional_argument,   NULL, 'w' },
         { "chars",  optional_argument,   NULL, 'c' },
         { "invert", no_argument, &invert_flag, 'n' },
+        { "print",  no_argument,  &print_flag, 'p' },
         { 0, 0, 0, 0 }
     };
 
@@ -93,14 +96,14 @@ int main(int argc, char** argv)
     image = stbi_load(input_filepath, &width, &height, NULL, STBI_grey);
 
     if (image == NULL) {
-        fprintf(stderr, "Could not load image\n");
+        fprintf(stderr, "Could not load image \n");
         return EXIT_FAILURE;
     }
 
     // Check if the width is a valid value
 
     if (resize_image && !(desired_width > 0 && desired_width <= width)) {
-        fprintf(stderr, "Argument \"width\" must be an integer between 1 and %d (the original image width)\n", width);
+        fprintf(stderr, "Argument \"width\" must be an integer between 1 and %d (the original image width) \n", width);
         return EXIT_FAILURE;
     }
     else if (desired_width == width) {
@@ -127,7 +130,7 @@ int main(int argc, char** argv)
     file_pointer = fopen(output_filepath, "w");
 
     if (file_pointer == NULL) {
-       fprintf(stderr, "Could not create an output file\n");
+       fprintf(stderr, "Could not create an output file \n");
        return EXIT_FAILURE;
     }
 
@@ -139,10 +142,10 @@ int main(int argc, char** argv)
 
     fprintf(
         file_pointer, 
-        "Input: %s\n"
-        "Output: %s\n"
-        "Resolution: %dx%d\n"
-        "Characters (%d): \"%s\"\n\n",
+        "Input: %s \n"
+        "Output: %s \n"
+        "Resolution: %dx%d \n"
+        "Characters (%d): \"%s\"\n \n",
         input_filepath, output_filepath, desired_width, desired_height, characters_count, characters
     );
 
@@ -151,9 +154,15 @@ int main(int argc, char** argv)
 
         int character_index = intensity / (255 / (float)(characters_count - 1));
 
+        if (print_flag) {
+            putchar(characters[character_index]);
+        }
         fputc(characters[character_index], file_pointer);
 
-        if ((i+1) % desired_width == 0) {
+        if ((i + 1) % desired_width == 0) {
+            if (print_flag) {
+                putchar('\n');
+            }
             fputc('\n', file_pointer);
         }
     }
