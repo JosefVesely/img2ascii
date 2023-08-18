@@ -22,7 +22,7 @@ make
 
 ## Usage 📋
 
-```yaml
+```js
 Usage: img2ascii --input=<FILE> [options]
 
 A command-line tool for converting images to ASCII art
@@ -40,7 +40,19 @@ GitHub Repository: https://github.com/JosefVesely/Image-to-ASCII
 
 ## Examples 🌟
 
-
+|                     Input                     |                                 Output                                 |
+|-----------------------------------------------|------------------------------------------------------------------------|
+| <img src="images/c.png" width="300">          | <img src="examples/ascii-c.png" width="500">                           |
+|                                               | `img2ascii --input=images/c.png --width=40 --print`                    |
+| <img src="images/monroe.jpg" width="300">     | <img src="examples/ascii-monroe.png" width="500">                      |
+|                                               | `img2ascii --input=images/monroe.jpg --width=35 --print --reverse`     |
+| <img src="images/pink_floyd.jpg" width="300"> | <img src="examples/ascii-pink_floyd.png" width="500">                  |
+|                                               | `img2ascii --input=images/pink_floyd.jpg --width=80 --print --reverse` |
+| <img src="images/pepsi.png" width="300">      | <img src="examples/ascii-pepsi.png" width="500">                       |
+|                                               | `img2ascii --input=images/pepsi.png --width=35 --print --reverse`      |
+| <img src="images/aperture.jpg" width="300">   | <img src="examples/ascii-aperture.png" width="500">                    |
+|                                               | `img2ascii.exe --input=images/aperture.jpg --width=50 --print`         |
+|-----------------------------------------------|------------------------------------------------------------------------|
 
 ## Contributing 🤝
 
