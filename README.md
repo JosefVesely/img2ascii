@@ -1,16 +1,16 @@
-<img src="img2ascii.png" align="right" width="250">
+<img src="img2ascii.png" width="250" align="right">
 
 # Image to ASCII
 
-[![Made with C](https://img.shields.io/badge/Made%20with-C-blue.svg)](https://opensource.org/licenses/MIT)
-[![License: MIT](https://img.shields.io/badge/License-MIT-orange.svg)](https://opensource.org/licenses/MIT)
-[![PRs: welcome](https://img.shields.io/badge/PRs:-welcome-limegreen.svg)](https://shields.io/)
+[![Made with C](https://img.shields.io/badge/Made%20with-C-blue.svg)](https://github.com/JosefVesely/Image-to-ASCII)
+[![License: MIT](https://img.shields.io/badge/License-MIT-orange.svg)](https://github.com/JosefVesely/Image-to-ASCII/blob/main/LICENSE)
+[![PRs: welcome](https://img.shields.io/badge/PRs:-welcome-limegreen.svg)](https://github.com/JosefVesely/Image-to-ASCII)
 [![GitHub stars](https://img.shields.io/github/stars/JosefVesely/Image-to-ASCII.svg?style=social&label=Star&maxAge=2592000)](https://github.com/JosefVesely/Image-to-ASCII)
-
 
 A command-line tool for converting images to ASCII art
 
-## Installation 🛠️
+
+## Installation :cd:
 
 ```sh
 # Clone the repository
@@ -23,7 +23,8 @@ cd Image-to-ASCII
 make
 ```
 
-## Usage 📋
+
+## Usage :clipboard:
 
 ```js
 Usage: img2ascii --input=<FILE> [options]
@@ -39,7 +40,8 @@ Options:
     -r, --reverse           Reverse the string of characters
 ```
 
-## Examples 🌟
+
+## Examples :star2:
 
 |                     Input                     |                                 Output                                 |
 |-----------------------------------------------|------------------------------------------------------------------------|
@@ -54,10 +56,19 @@ Options:
 | <img src="images/aperture.jpg" width="300">   | <img src="examples/ascii-aperture.png" width="500">                    |
 |                                               | `img2ascii.exe --input=images/aperture.jpg --width=50 --print`         |
 
-## Contributing 🤝
+
+## TODO :heavy_check_mark:
+
+- [ ] Add option for colored output
+- [ ] Name the output files with input filename and date (e.g. monroe_08-18-2023.txt)
+- [ ] Create a release
+
+
+## Contributing :handshake:
 
 Contributions are welcome! If you have any improvements or bug fixes, feel free to submit a pull request
 
-## License 📄
+
+## License :page_facing_up:
 
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/JosefVesely/Image-to-ASCII/blob/main/LICENSE) file for details
