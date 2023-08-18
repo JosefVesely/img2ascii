@@ -1,6 +1,6 @@
-# Image to ASCII 🏞️
+<img src="img2ascii.png" align="right" width="250">
 
-<img src="img2ascii.png" align="right" width="200">
+# Image to ASCII 🏞️
 
 [![Made with C](https://img.shields.io/badge/Made%20with-C-blue.svg)](https://opensource.org/licenses/MIT)
 [![License: MIT](https://img.shields.io/badge/License-MIT-orange.svg)](https://opensource.org/licenses/MIT)
