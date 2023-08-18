@@ -1,4 +1,4 @@
-<img src="img2ascii.png" align="right" width="300">
+<img src="img2ascii.png" align="right" width="200">
 
 # Image to ASCII 🏞️
 
