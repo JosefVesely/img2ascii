@@ -1,11 +1,12 @@
-# img2ascii 🏞️
+<img src="img2ascii.png" align="right" width="300">
+
+# Image to ASCII 🏞️
 
 [![Made with C](https://img.shields.io/badge/Made%20with-C-blue.svg)](https://opensource.org/licenses/MIT)
 [![License: MIT](https://img.shields.io/badge/License-MIT-orange.svg)](https://opensource.org/licenses/MIT)
 [![PRs: welcome](https://img.shields.io/badge/PRs:-welcome-limegreen.svg)](https://shields.io/)
 [![GitHub stars](https://img.shields.io/github/stars/JosefVesely/Image-to-ASCII.svg?style=social&label=Star&maxAge=2592000)](https://github.com/JosefVesely/Image-to-ASCII)
 
-<img src="img2ascii.png" align="right" width="300">
 
 A command-line tool for converting images to ASCII art
 
