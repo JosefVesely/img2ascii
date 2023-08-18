@@ -5,6 +5,8 @@
 [![PRs: welcome](https://img.shields.io/badge/PRs:-welcome-limegreen.svg)](https://shields.io/)
 [![GitHub stars](https://img.shields.io/github/stars/JosefVesely/Image-to-ASCII.svg?style=social&label=Star&maxAge=2592000)](https://github.com/JosefVesely/Image-to-ASCII)
 
+<img src="img2ascii.png" align="right" width="300">
+
 A command-line tool for converting images to ASCII art
 
 ## Installation 🛠️
@@ -52,7 +54,6 @@ GitHub Repository: https://github.com/JosefVesely/Image-to-ASCII
 |                                               | `img2ascii --input=images/pepsi.png --width=35 --print --reverse`      |
 | <img src="images/aperture.jpg" width="300">   | <img src="examples/ascii-aperture.png" width="500">                    |
 |                                               | `img2ascii.exe --input=images/aperture.jpg --width=50 --print`         |
-|-----------------------------------------------|------------------------------------------------------------------------|
 
 ## Contributing 🤝
 
