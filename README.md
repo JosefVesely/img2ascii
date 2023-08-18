@@ -1,6 +1,6 @@
 <img src="img2ascii.png" align="right" width="250">
 
-# Image to ASCII 🏞️
+# Image to ASCII
 
 [![Made with C](https://img.shields.io/badge/Made%20with-C-blue.svg)](https://opensource.org/licenses/MIT)
 [![License: MIT](https://img.shields.io/badge/License-MIT-orange.svg)](https://opensource.org/licenses/MIT)
@@ -37,8 +37,6 @@ Options:
     -c, --chars=<STRING>    Characters to be used for the ASCII image
     -p, --print             Print the output to the console
     -r, --reverse           Reverse the string of characters
-    
-GitHub Repository: https://github.com/JosefVesely/Image-to-ASCII
 ```
 
 ## Examples 🌟
