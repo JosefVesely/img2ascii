@@ -1,81 +1,51 @@
-# Image to ASCII
+# img2ascii 🏞️
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Made with C](https://img.shields.io/badge/Made%20with-C-blue.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-orange.svg)](https://opensource.org/licenses/MIT)
+[![PRs: welcome](https://img.shields.io/badge/PRs:-welcome-limegreen.svg)](https://shields.io/)
+[![GitHub stars](https://img.shields.io/github/stars/JosefVesely/Image-to-ASCII.svg?style=social&label=Star&maxAge=2592000)](https://github.com/JosefVesely/Image-to-ASCII)
 
-**Convert images to ASCII art**
+A command-line tool for converting images to ASCII art
 
-*Library used for handling images: [STB Library](https://github.com/nothings/stb)*
+## Installation 🛠️
 
+```sh
+# Clone the repository
+git clone https://github.com/JosefVesely/Image-to-ASCII
 
-## Usage
+# Enter the project directory
+cd Image-to-ASCII
 
-```
-Usage: img2ascii.exe --input=image.png [--output=ascii.txt] [--width=50] [--chars="@#?|:. "]
-  --help: shows this message
-  --input={image.png}: input file path
-  --output={ascii.txt}: output file path, "output.txt" if none (optional)
-  --width={50}: width of output (optional)
-  --chars={"@#?|:. "}: characters to be used (optional)
-  --invert: inverts colors (optional)
-```
-
-## Example
-
-`img2ascii.exe --input=images/c.png --output=c.txt --width=40 --chars=" .:-=+*#%@"`
-
-Output:
-
-```
-Input: images/c.png
-Output: c.txt
-Resolution: 40x45
-Characters (10): " .:-=+*#%@"
-
-@@@@@@@@@@@@@@@@@%*++*%@@@@@@@@@@@@@@@@@
-@@@@@@@@@@@@@@@%*++++++*%@@@@@@@@@@@@@@@
-@@@@@@@@@@@@@%#++++++++++#%@@@@@@@@@@@@@
-@@@@@@@@@@@%#*++++++++++++*#%@@@@@@@@@@@
-@@@@@@@@@@%*++++++++++++++++*%@@@@@@@@@@
-@@@@@@@@%#++++++++++++++++++++#%@@@@@@@@
-@@@@@@%#++++++++++++++++++++++++#%@@@@@@
-@@@@%#*++++++++++++++++++++++++++*#%@@@@
-@@@%*++++++++++++++++++++++++++++++*%@@@
-@%#+++++++++++++*##%%##*+++++++++++++#%@
-%*++++++++++++#%%@@@@@@%%#++++++++++++*%
-*+++++++++++*%@@@@@@@@@@@@%*++++++++++=+
-+++++++++++#@@@@@@@@@@@@@@@@#+++++++=-::
-++++++++++#@@@@@@@@@@@@@@@@@@#++++=-::::
-+++++++++#@@@@@@@@@@@@@@@@@@@@#++=-:::::
-++++++++*%@@@@@@@%%%%%%@@@@@@@%+-:::::::
-++++++++%@@@@@@@%*++++*%@@@@@%+:::::::::
-+++++++*%@@@@@%#++++++++#%@%*-::::::::::
-+++++++#@@@@@@#++++++++++##=::::::::::::
-+++++++%@@@@@%++++++++++=-::::::::::::::
-+++++++%@@@@@#++++++++=-::::::::::::::::
-++++++*%@@@@@*++++++==::::::::::::::::::
-++++++*%@@@@@*+++++=-:::::::::::::::::::
-++++++*%@@@@@*+++=-:.:::::::::::::::::::
-+++++++%@@@@@#+=-:.....:::::::::::::::::
-+++++++%@@@@@%=:.........:::::::::::::::
-+++++++#@@@@@@*:........:*#=::::::::::::
-+++++++*%@@@@@%+:......:+%@%*-::::::::::
-++++++++%@@@@@@%#=::::=#@@@@@%+:::::::::
-+++++++-=%@@@@@@@%%##%%@@@@@@@%=::::::::
-+++++=-.:*@@@@@@@@@@@@@@@@@@@@*:.:::::::
-+++=-:...:*@@@@@@@@@@@@@@@@@@*:....:::::
-+=-:......:*@@@@@@@@@@@@@@@@*:.......:::
-*:.........:+%@@@@@@@@@@@@%+:..........+
-%-...........-*%%@@@@@@%%*-...........-%
-@%+:...........:=+*##*+=:...........:+%@
-@@@#=:............::::............:=#@@@
-@@@@%#-:........................:-#%@@@@
-@@@@@@%*-......................-*%@@@@@@
-@@@@@@@@%+:..................:+%@@@@@@@@
-@@@@@@@@@@#=:..............:=#@@@@@@@@@@
-@@@@@@@@@@@%*-............-*%@@@@@@@@@@@
-@@@@@@@@@@@@@%*-........-*%@@@@@@@@@@@@@
-@@@@@@@@@@@@@@@%+:....:+%@@@@@@@@@@@@@@@
-@@@@@@@@@@@@@@@@@#=::=#@@@@@@@@@@@@@@@@@
+# Compile the program using Make
+make
 ```
 
-Find more character combinations: [Character representation of grey scale images](http://paulbourke.net/dataformats/asciiart/)
+## Usage 📋
+
+```yaml
+Usage: img2ascii --input=<FILE> [options]
+
+A command-line tool for converting images to ASCII art
+
+Options:
+    -i, --input=<FILE>      Path of the input image file (required)
+    -o, --output=<FILE>     Path of the output file (default is "output.txt")
+    -w, --width=<NUMBER>    Width of the output
+    -c, --chars=<STRING>    Characters to be used for the ASCII image
+    -p, --print             Print the output to the console
+    -r, --reverse           Reverse the string of characters
+    
+GitHub Repository: https://github.com/JosefVesely/Image-to-ASCII
+```
+
+## Examples 🌟
+
+
+
+## Contributing 🤝
+
+Contributions are welcome! If you have any improvements or bug fixes, feel free to submit a pull request
+
+## License 📄
+
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/JosefVesely/Image-to-ASCII/blob/main/LICENSE) file for details
