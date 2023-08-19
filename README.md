@@ -1,6 +1,4 @@
-<img src="img2ascii.png" width="250" align="right">
-
-# Image to ASCII
+# <img src="img2ascii.png" width="300">
 
 [![Made with C](https://img.shields.io/badge/Made%20with-C-blue.svg)](https://github.com/JosefVesely/Image-to-ASCII)
 [![License: MIT](https://img.shields.io/badge/License-MIT-orange.svg)](https://github.com/JosefVesely/Image-to-ASCII/blob/main/LICENSE)
