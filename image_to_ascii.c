@@ -11,6 +11,16 @@
 
 char characters[] = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ";
 
+void reverse_string(char* string) {
+    int length = strlen(string);
+
+    for (int i = 0; i < length / 2; i++) {
+        char temp = string[i];
+        string[i] = string[length - i - 1];
+        string[length - i - 1] = temp;
+    }
+}
+
 void print_usage(void)
 {
     printf(
@@ -140,7 +150,7 @@ int main(int argc, char** argv)
     }
 
     if (reverse_flag) {
-        strrev(characters);
+        reverse_string(characters);
     }
 
     int characters_count = strlen(characters);
