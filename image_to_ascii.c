@@ -61,13 +61,13 @@ int main(int argc, char** argv)
 
     struct option long_options[] =
     {
-        { "help",    no_argument,           NULL, 'h' },
-        { "input",   required_argument,     NULL, 'i' },
-        { "output",  optional_argument,     NULL, 'o' },
-        { "width",   optional_argument,     NULL, 'w' },
-        { "chars",   optional_argument,     NULL, 'c' },
-        { "print",   no_argument,  &print_flag,   'p' },
-        { "reverse", no_argument,  &reverse_flag, 'r' },
+        { "help",    no_argument,       NULL, 'h' },
+        { "input",   required_argument, NULL, 'i' },
+        { "output",  optional_argument, NULL, 'o' },
+        { "width",   optional_argument, NULL, 'w' },
+        { "chars",   optional_argument, NULL, 'c' },
+        { "print",   no_argument,       NULL, 'p' },
+        { "reverse", no_argument,       NULL, 'r' },
         { 0, 0, 0, 0 }
     };
 
@@ -99,6 +99,14 @@ int main(int argc, char** argv)
             if (strlen(optarg) != 0) {
                 strcpy(characters, optarg);
             }
+            break;
+
+        case 'p':
+            print_flag = true;
+            break;
+
+        case 'r':
+            reverse_flag = true;
             break;
         }
     }
@@ -181,6 +189,8 @@ int main(int argc, char** argv)
             fputc('\n', file_pointer);
         }
     }
+
+    printf("File saved as: %s \n", output_filepath);
 
     fclose(file_pointer);
     stbi_image_free(image);
