@@ -1,3 +1,4 @@
 .vscode/
 tests/
-img2ascii.exe
+*.exe
+*.txt
