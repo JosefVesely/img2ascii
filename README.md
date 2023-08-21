@@ -3,7 +3,7 @@
 [![Made with C](https://img.shields.io/badge/Made%20with-C-blue.svg)](https://github.com/JosefVesely/Image-to-ASCII)
 [![License: MIT](https://img.shields.io/badge/License-MIT-orange.svg)](https://github.com/JosefVesely/Image-to-ASCII/blob/main/LICENSE)
 [![PRs: welcome](https://img.shields.io/badge/PRs:-welcome-limegreen.svg)](https://github.com/JosefVesely/Image-to-ASCII)
-[![GitHub stars](https://img.shields.io/github/stars/JosefVesely/Image-to-ASCII.svg?style=social&label=Star&maxAge=2592000)](https://github.com/JosefVesely/Image-to-ASCII)
+[![GitHub stars](https://img.shields.io/github/stars/JosefVesely/Image-to-ASCII.svg?style=social&label=Star)](https://github.com/JosefVesely/Image-to-ASCII)
 
 A command-line tool for converting images to ASCII art
 
@@ -24,16 +24,16 @@ make
 
 ## Usage :clipboard:
 
-```js
-Usage: img2ascii --input=<FILE> [options]
+```c
+Usage: img2ascii -i <FILE> [options]
 
 A command-line tool for converting images to ASCII art
 
 Options:
-    -i, --input=<FILE>      Path of the input image file (required)
-    -o, --output=<FILE>     Path of the output file (default is "output.txt")
-    -w, --width=<NUMBER>    Width of the output
-    -c, --chars=<STRING>    Characters to be used for the ASCII image
+    -i, --input  <FILE>     Path of the input image file (required)
+    -o, --output <FILE>     Path of the output file (default is 'output.txt')
+    -w, --width  <NUMBER>   Width of the output
+    -c, --chars  <STRING>   Characters to be used for the ASCII image
     -p, --print             Print the output to the console
     -r, --reverse           Reverse the string of characters
 ```
@@ -44,15 +44,15 @@ Options:
 |                     Input                     |                                 Output                                 |
 |-----------------------------------------------|------------------------------------------------------------------------|
 | <img src="images/c.png" width="300">          | <img src="examples/ascii-c.png" width="500">                           |
-|                                               | `img2ascii --input=images/c.png --width=40 --print`                    |
+|                                               | `img2ascii -i images/c.png -w 40 -p`                                   |
 | <img src="images/monroe.jpg" width="300">     | <img src="examples/ascii-monroe.png" width="500">                      |
-|                                               | `img2ascii --input=images/monroe.jpg --width=35 --print --reverse`     |
+|                                               | `img2ascii -i images/monroe.jpg -w 35 -p -r`                           |
 | <img src="images/pink_floyd.jpg" width="300"> | <img src="examples/ascii-pink_floyd.png" width="500">                  |
-|                                               | `img2ascii --input=images/pink_floyd.jpg --width=80 --print --reverse` |
+|                                               | `img2ascii -i images/pink_floyd.jpg -w 80 -p -r`                       |
 | <img src="images/pepsi.png" width="300">      | <img src="examples/ascii-pepsi.png" width="500">                       |
-|                                               | `img2ascii --input=images/pepsi.png --width=35 --print --reverse`      |
+|                                               | `img2ascii -i images/pepsi.png -w 35 -p -r`                            |
 | <img src="images/aperture.jpg" width="300">   | <img src="examples/ascii-aperture.png" width="500">                    |
-|                                               | `img2ascii.exe --input=images/aperture.jpg --width=50 --print`         |
+|                                               | `img2ascii -i images/aperture.jpg -w 50 -p`                            |
 
 
 ## TODO :heavy_check_mark:
