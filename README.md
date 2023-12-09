@@ -1,4 +1,4 @@
-# <img src="img2ascii.png" width="300">
+# <img src="img2ascii.png" width="350">
 
 [![Made with C](https://img.shields.io/badge/Made%20with-C-blue.svg)](https://github.com/JosefVesely/Image-to-ASCII)
 [![License: MIT](https://img.shields.io/badge/License-MIT-orange.svg)](https://github.com/JosefVesely/Image-to-ASCII/blob/main/LICENSE)
@@ -25,13 +25,13 @@ make
 ## Usage :clipboard:
 
 ```c
-Usage: img2ascii -i <FILE> [options]
+Usage: img2ascii [options] -i <FILE> [-o <FILE>]
 
 A command-line tool for converting images to ASCII art
 
 Options:
     -i, --input  <FILE>     Path of the input image file (required)
-    -o, --output <FILE>     Path of the output file (default is 'output.txt')
+    -o, --output <FILE>     Path of the output file
     -w, --width  <NUMBER>   Width of the output
     -c, --chars  <STRING>   Characters to be used for the ASCII image
     -p, --print             Print the output to the console
@@ -58,7 +58,8 @@ Options:
 ## TODO :heavy_check_mark:
 
 - [ ] Add option for colored output
-- [ ] Name the output files with input filename and date (e.g. monroe_08-18-2023.txt)
+- [ ] ~~Name the output files with input filename and date (e.g. monroe_08-18-2023.txt)~~
+- [X] Name the output files with input filename (e.g. monroe.txt)
 - [ ] Create a release
 
 
