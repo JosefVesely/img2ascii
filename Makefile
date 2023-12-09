@@ -1,8 +1,11 @@
+SRC=image_to_ascii.c
+BIN=img2ascii
 CC=gcc
 CFLAGS=-Wall
+LIBS=-lm
 
 all:
-	$(CC) $(CFLAGS) -o img2ascii image_to_ascii.c -lm
+	$(CC) $(CFLAGS) -o $(BIN) $(SRC) $(LIBS)
 
 clean:
-	$(RM) img2ascii img2ascii.exe
+	$(RM) $(BIN) $(BIN).exe
