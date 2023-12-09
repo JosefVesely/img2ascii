@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include <getopt.h>
@@ -11,7 +12,8 @@
 
 char characters[] = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ";
 
-void reverse_string(char* string) {
+void reverse_string(char* string) 
+{
     int length = strlen(string);
 
     for (int i = 0; i < length / 2; i++) {
@@ -24,13 +26,13 @@ void reverse_string(char* string) {
 void show_usage(void)
 {
     printf(
-        "\nUsage: img2ascii -i <FILE> [options] \n\n"
+        "\nUsage: img2ascii [options] -i <FILE> [-o <FILE>] \n\n"
 
         "A command-line tool for converting images to ASCII art \n\n"
 
         "Options: \n"
         "   -i, --input  <FILE>     Path of the input image file (required) \n"
-        "   -o, --output <FILE>     Path of the output file (default is 'output.txt') \n"
+        "   -o, --output <FILE>     Path of the output file \n"
         "   -w, --width  <NUMBER>   Width of the output \n"
         "   -c, --chars  <STRING>   Characters to be used for the ASCII image \n"
         "   -p, --print             Print the output to the console \n"
@@ -39,6 +41,35 @@ void show_usage(void)
         "GitHub Repository: https://github.com/JosefVesely/Image-to-ASCII \n\n"
     );
     exit(EXIT_FAILURE);
+}
+
+char* get_basename(const char* full_path) {
+    const char* last_slash = strrchr(full_path, '/');
+
+    #ifdef _WIN32  // Backslashes are also directory separators on Windows
+    const char* last_backslash = strrchr(full_path, '\\');
+    last_slash = (last_backslash > last_slash) ? last_backslash : last_slash;
+    #endif
+
+    if (last_slash != NULL) {
+        last_slash++;  // Skip the directory separator
+    } else {
+        last_slash = full_path;  // No slash found, use the full path
+    }
+
+    const char* last_dot = strrchr(last_slash, '.');
+
+    // Length of the filename without extension
+    size_t length = (last_dot != NULL) ? (int)(last_dot - last_slash) : strlen(last_slash);
+
+    char* filename = (char*)malloc(length + 5);  // +4 for ".txt" and +1 for '\0'
+
+    if (filename != NULL) {
+        strncpy(filename, last_slash, length);
+        strcpy(filename + length, ".txt");
+    }
+
+    return filename;
 }
 
 
@@ -53,7 +84,7 @@ int main(int argc, char** argv)
     // Parse arguments from the command line
 
     char* input_filepath = NULL;
-    char* output_filepath = "output.txt";
+    char* output_filepath = NULL;
     bool reverse_flag = false;
     bool print_flag = false;
     bool resize_image = false;
@@ -86,6 +117,7 @@ int main(int argc, char** argv)
             break;
 
         case 'o':
+            //output_filepath = (char*)malloc(strlen(optarg));
             output_filepath = optarg;
             break;
 
@@ -115,6 +147,10 @@ int main(int argc, char** argv)
 
     if (input_filepath == NULL) {
         show_usage();
+    }
+
+    if (output_filepath == NULL) {
+        output_filepath = get_basename(input_filepath);
     }
 
     // Load the image in grayscale
@@ -213,8 +249,10 @@ int main(int argc, char** argv)
         }
     }
 
-    printf("\nFile saved as '%s' \n", output_filepath);
+    printf("File saved as '%s' \n", output_filepath);
 
+    // Free memory
+    free(output_filepath);
     fclose(file_pointer);
     stbi_image_free(image);
 
