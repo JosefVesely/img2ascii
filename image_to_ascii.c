@@ -10,9 +10,8 @@
 #include "stb_image/stb_image_write.h"
 #include "stb_image/stb_image_resize.h"
 
-char characters[] = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ";
 
-void reverse_string(char* string) 
+void reverse_string(char *string) 
 {
     int length = strlen(string);
 
@@ -22,6 +21,7 @@ void reverse_string(char* string)
         string[length - i - 1] = temp;
     }
 }
+
 
 void show_usage(void)
 {
@@ -36,59 +36,62 @@ void show_usage(void)
         "   -w, --width  <NUMBER>   Width of the output \n"
         "   -c, --chars  <STRING>   Characters to be used for the ASCII image \n"
         "   -p, --print             Print the output to the console \n"
-        "   -r, --reverse           Reverse the string of characters \n\n"
-    
-        "GitHub Repository: https://github.com/JosefVesely/Image-to-ASCII \n\n"
+        "   -r, --reverse           Reverse the string of characters \n"
     );
-    exit(EXIT_FAILURE);
 }
 
-char* get_basename(const char* full_path) {
-    const char* last_slash = strrchr(full_path, '/');
 
-    #ifdef _WIN32  // Backslashes are also directory separators on Windows
-    const char* last_backslash = strrchr(full_path, '\\');
-    last_slash = (last_backslash > last_slash) ? last_backslash : last_slash;
+char *get_basename(const char *full_path) {
+    char *last_slash = strrchr(full_path, '/');
+
+    #ifdef _WIN32 // Backslashes are also directory separators on Windows
+        char *last_backslash = strrchr(full_path, '\\');
+        last_slash = (last_backslash > last_slash) ? last_backslash : last_slash;
     #endif
 
     if (last_slash != NULL) {
-        last_slash++;  // Skip the directory separator
+        last_slash++; // Skip the directory separator
     } else {
-        last_slash = full_path;  // No slash found, use the full path
+        last_slash = (char*)full_path; // No slash found, use the full path
     }
 
-    const char* last_dot = strrchr(last_slash, '.');
+    char *last_dot = strrchr(last_slash, '.');
 
     // Length of the filename without extension
     size_t length = (last_dot != NULL) ? (int)(last_dot - last_slash) : strlen(last_slash);
 
-    char* filename = (char*)malloc(length + 5);  // +4 for ".txt" and +1 for '\0'
+    char *filename = (char*)malloc(length + 5);  // +4 for ".txt" and +1 for '\0'
 
-    if (filename != NULL) {
-        strncpy(filename, last_slash, length);
-        strcpy(filename + length, ".txt");
+    if (filename == NULL) {
+        fprintf(stderr, "Memory allocation failed for filename \n");
+        exit(EXIT_FAILURE);
     }
+
+    strncpy(filename, last_slash, length);
+    filename[length] = '\0';
+    strcat(filename, ".txt");
 
     return filename;
 }
 
 
-int main(int argc, char** argv)
-{
+void process_arguments(
+    int argc, 
+    char **argv, 
+    char **input_filepath, 
+    char **output_filepath, 
+    bool *reverse_flag, 
+    bool *print_flag,
+    char **characters,
+    int *desired_width,
+    bool *resize_image
+) {
     // Exit if no command line arguments are given
 
     if (argc == 1) {
         show_usage();
+        exit(EXIT_FAILURE);
     }
-
-    // Parse arguments from the command line
-
-    char* input_filepath = NULL;
-    char* output_filepath = NULL;
-    bool reverse_flag = false;
-    bool print_flag = false;
-    bool resize_image = false;
-    int desired_width = 0;
 
     struct option long_options[] =
     {
@@ -103,7 +106,7 @@ int main(int argc, char** argv)
     };
 
     int option;
-    const char* short_options = "hi:o:w:c:pr";
+    const char *short_options = "hi:o:w:c:pr";
 
     while ((option = getopt_long(argc, argv, short_options, long_options, NULL)) != EOF)
     {
@@ -111,33 +114,34 @@ int main(int argc, char** argv)
         {
         case 'h':
             show_usage();
+            exit(EXIT_FAILURE);
 
         case 'i':
-            input_filepath = optarg;
+            *input_filepath = optarg;
             break;
 
         case 'o':
-            //output_filepath = (char*)malloc(strlen(optarg));
-            output_filepath = optarg;
+            *output_filepath = optarg;
             break;
 
         case 'w':
-            desired_width = atoi(optarg);
-            resize_image = true;
+            *desired_width = atoi(optarg);
+            *resize_image = true;
             break;
 
         case 'c':
             if (strlen(optarg) != 0) {
-                strcpy(characters, optarg);
+                *characters = realloc(*characters, strlen(optarg) + 1);
+                strcpy(*characters, optarg);
             }
             break;
 
         case 'p':
-            print_flag = true;
+            *print_flag = true;
             break;
 
         case 'r':
-            reverse_flag = true;
+            *reverse_flag = true;
             break;
         
         case '?':
@@ -145,18 +149,23 @@ int main(int argc, char** argv)
         }     
     }
 
-    if (input_filepath == NULL) {
+    if (*input_filepath == NULL) {
         show_usage();
+        exit(EXIT_FAILURE);
     }
 
-    if (output_filepath == NULL) {
-        output_filepath = get_basename(input_filepath);
+    if (*output_filepath == NULL) {
+        *output_filepath = get_basename(*input_filepath);
     }
+}
 
+
+unsigned char *load_image(const char *input_filepath, int *desired_width, int *desired_height, bool *resize_image)
+{
     // Load the image in grayscale
 
     int width, height;
-    unsigned char* image = NULL;
+    unsigned char *image = NULL;
 
     image = stbi_load(input_filepath, &width, &height, NULL, STBI_grey);
 
@@ -165,38 +174,46 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
-    // Check if the width is a valid value
+    // Resize the image
 
-    if (resize_image) {
-        if (desired_width <= 0) {
+    if (*resize_image) {
+        // Check if the chosen width is valid
+
+        if (*desired_width <= 0) {
             fprintf(stderr, "Argument 'width' must be greater than 0 \n");
             exit(EXIT_FAILURE);
         } 
-        else if (desired_width >= width) {
-            fprintf(stderr, "Argument 'width' can not be greater than the original image width (%dpx) \n", width);
+        else if (*desired_width > width) {
+            fprintf(stderr, "Argument 'width' can not be greater than the original image width (%ipx) \n", width);
             exit(EXIT_FAILURE);
         }
-    }
-    else if (desired_width == width) {
-        resize_image = false;
-    }
-    
-    // Resize the image
 
-    int desired_height;
-
-    if (resize_image) {
-        desired_height = height / (width / (float)desired_width);
-        stbir_resize_uint8(image, width, height, width, image, desired_width, desired_height, desired_width, STBI_grey);
+        // Resize image
+        *desired_height = height / (width / (float)*desired_width);
+        stbir_resize_uint8(image, width, height, width, image, *desired_width, *desired_height, *desired_width, STBI_grey);
     }
     else {
-        desired_width = width;
-        desired_height = height;
-    }
+        *desired_width = width;
+        *desired_height = height;
+    }    
 
-    // Create an output file
+    return image;
+}
 
-    FILE* file_pointer = NULL;
+
+void write_ascii(
+    int argc, 
+    char **argv, 
+    unsigned char *image,
+    char *input_filepath, 
+    char *output_filepath, 
+    bool print_flag,
+    bool reverse_flag, 
+    char *characters, 
+    int desired_width,
+    int desired_height
+) {
+    FILE *file_pointer = NULL;
 
     file_pointer = fopen(output_filepath, "w");
 
@@ -218,15 +235,18 @@ int main(int argc, char** argv)
     }
 
     int characters_count = strlen(characters);
-    
+
     fprintf(
         file_pointer,
         "\n\n"
         "Input: %s \n"
         "Output: %s \n"
-        "Resolution: %dx%d \n"
-        "Characters (%d): \"%s\" \n\n",
-        input_filepath, output_filepath, desired_width, desired_height, characters_count, characters
+        "Resolution: %ix%i \n"
+        "Characters (%i): \"%s\" \n\n",
+        input_filepath, 
+        output_filepath, 
+        desired_width, desired_height, 
+        characters_count, characters
     );
 
     // Write the ASCII art to the file
@@ -249,12 +269,62 @@ int main(int argc, char** argv)
         }
     }
 
-    printf("File saved as '%s' \n", output_filepath);
+    fclose(file_pointer);
 
     // Free memory
-    free(output_filepath);
-    fclose(file_pointer);
     stbi_image_free(image);
+    free(output_filepath);
+    free(characters);
+
+    printf("File saved as '%s' \n", output_filepath);
+}
+
+
+int main(int argc, char **argv)
+{
+    // Parse arguments from the command line
+
+    char *input_filepath = NULL;
+    char *output_filepath = NULL;
+    bool reverse_flag = false;
+    bool print_flag = false;
+    char *characters = strdup("$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ");
+    int desired_width = 0;
+    int desired_height = 0;
+    bool resize_image = false;
+
+    process_arguments(
+        argc, 
+        argv, 
+        &input_filepath, 
+        &output_filepath, 
+        &reverse_flag, 
+        &print_flag,
+        &characters,
+        &desired_width,
+        &resize_image
+    );
+
+    // Load the image
+
+    unsigned char *image = load_image(input_filepath, &desired_width, &desired_height, &resize_image);
+
+    // Create an output file
+
+    write_ascii(
+        argc, 
+        argv, 
+        image,
+        input_filepath, 
+        output_filepath, 
+        print_flag,
+        reverse_flag, 
+        characters, 
+        desired_width,
+        desired_height
+    );
+
+    
 
     return EXIT_SUCCESS;
 }
