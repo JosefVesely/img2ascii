@@ -2,4 +2,3 @@
 tests/
 *.exe
 *.txt
-*.h linguist-language=C
