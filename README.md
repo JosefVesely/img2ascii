@@ -2,7 +2,7 @@
 
 [![Made with C](https://img.shields.io/badge/-Made%20with%20C-5C6BC0?logo=C)](https://github.com/JosefVesely/Image-to-ASCII)
 [![MIT License](https://img.shields.io/badge/MIT_License-09A44D)](https://github.com/JosefVesely/Image-to-ASCII/blob/main/LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/JosefVesely/Image-to-ASCII.svg?label=Stars)](#Star)
+[![GitHub stars](https://img.shields.io/github/stars/JosefVesely/img2ascii.svg?label=Stars)](#Star)
 
 A command-line tool for converting images to ASCII art
 
@@ -12,10 +12,10 @@ A command-line tool for converting images to ASCII art
 
 ```sh
 # Clone the repository
-git clone https://github.com/JosefVesely/Image-to-ASCII
+git clone https://github.com/JosefVesely/img2ascii
 
 # Navigate to the project directory
-cd Image-to-ASCII
+cd img2ascii
 
 # Compile the program using Make
 make
@@ -31,14 +31,14 @@ img2ascii [options] -i <FILE> [-o <FILE>]
 
 ### Options:
 
-| Short | Long      | Argument | Description                                     |
-|-------|-----------|----------|-------------------------------------------------|
-| -i    | --input   | *File*   | Path of the input image file ***(required)***   |
-| -o    | --output  | *File*   | Path of the output file                         |
-| -w    | --width   | *Number* | Width of the output image                       |
-| -c    | --chars   | *String* | Characters to be used for the ASCII image       |
-| -p    | --print   |          | Print the output to the console                 |
-| -r    | --reverse |          | Reverse the string of characters                |
+| Short | Long      | Parameter | Description                                   |
+|-------|-----------|-----------|-----------------------------------------------|
+| -i    | --input   | *File*    | Path of the input image file ***(required)*** |
+| -o    | --output  | *File*    | Path of the output file                       |
+| -w    | --width   | *Number*  | Width of the output image                     |
+| -c    | --chars   | *String*  | Characters to be used for the ASCII image     |
+| -p    | --print   |           | Print the output to the console               |
+| -r    | --reverse |           | Reverse the string of characters              |
 
 ## 🧩 Examples
 
@@ -61,4 +61,4 @@ Contributions are welcome! Feel free to open an issue or submit a pull request
 
 ## 📜 License
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/JosefVesely/Image-to-ASCII/blob/main/LICENSE) file for details
+This project is licensed under the [MIT License](https://github.com/JosefVesely/Image-to-ASCII/blob/main/LICENSE)
