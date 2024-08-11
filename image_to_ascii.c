@@ -36,7 +36,7 @@ void show_usage(void)
         "   -w, --width  <NUMBER>   Width of the output \n"
         "   -c, --chars  <STRING>   Characters to be used for the ASCII image \n"
         "   -p, --print             Print the output to the console \n"
-        "   -r, --reverse           Reverse the string of characters \n"
+        "   -r, --reverse           Reverse the string of characters \n\n"
     );
 }
 
@@ -146,7 +146,7 @@ void process_arguments(
         
         case '?':
             exit(EXIT_FAILURE);
-        }     
+        }
     }
 
     if (*input_filepath == NULL) {
@@ -178,7 +178,6 @@ unsigned char *load_image(const char *input_filepath, int *desired_width, int *d
 
     if (*resize_image) {
         // Check if the chosen width is valid
-
         if (*desired_width <= 0) {
             fprintf(stderr, "Argument 'width' must be greater than 0 \n");
             exit(EXIT_FAILURE);
@@ -188,15 +187,14 @@ unsigned char *load_image(const char *input_filepath, int *desired_width, int *d
             exit(EXIT_FAILURE);
         }
 
-        // Resize image
         *desired_height = height / (width / (float)*desired_width);
         stbir_resize_uint8(image, width, height, width, image, *desired_width, *desired_height, *desired_width, STBI_grey);
     }
     else {
         *desired_width = width;
         *desired_height = height;
-    }    
-
+    }
+    
     return image;
 }
 
@@ -271,12 +269,12 @@ void write_ascii(
 
     fclose(file_pointer);
 
+    printf("File saved as '%s' \n", output_filepath);
+
     // Free memory
     stbi_image_free(image);
     free(output_filepath);
     free(characters);
-
-    printf("File saved as '%s' \n", output_filepath);
 }
 
 
@@ -323,8 +321,6 @@ int main(int argc, char **argv)
         desired_width,
         desired_height
     );
-
-    
 
     return EXIT_SUCCESS;
 }
