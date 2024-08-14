@@ -1,8 +1,8 @@
-SRC=image_to_ascii.c
-BIN=img2ascii
-CC=gcc
-CFLAGS=-Wall
-LIBS=-lm
+SRC = src/main.c
+BIN = img2ascii
+CC = gcc
+CFLAGS = -Wall -Wextra
+LIBS = -lm
 
 all:
 	$(CC) $(CFLAGS) -o $(BIN) $(SRC) $(LIBS)
