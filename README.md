@@ -1,12 +1,13 @@
-<img src="img2ascii.png">
+<div align="center" width="100">
+  
+    ## <img src="img2ascii_new.png">
+    *A command-line tool for converting images to ASCII art*
+  
+    [![Made with C](https://img.shields.io/badge/-Made%20with%20C-5C6BC0?logo=C)](https://github.com/JosefVesely/img2ascii)
+    [![MIT License](https://img.shields.io/badge/MIT_License-09A44D)](https://github.com/JosefVesely/img2ascii/blob/main/LICENSE)
+    [![GitHub stars](https://img.shields.io/github/stars/JosefVesely/img2ascii.svg?label=Stars)](https://github.com/JosefVesely/img2ascii/stargazers)
 
-[![Made with C](https://img.shields.io/badge/-Made%20with%20C-5C6BC0?logo=C)](https://github.com/JosefVesely/Image-to-ASCII)
-[![MIT License](https://img.shields.io/badge/MIT_License-09A44D)](https://github.com/JosefVesely/Image-to-ASCII/blob/main/LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/JosefVesely/img2ascii.svg?label=Stars)](#Star)
-
-A command-line tool for converting images to ASCII art
-
----
+</div>
 
 ## 🛠️ Installation
 
