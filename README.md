@@ -1,6 +1,6 @@
-<div align="center" width="100">
+<div align="center">
   
-    ## <img src="img2ascii_new.png">
+    ## <img src="img2ascii.png">
     *A command-line tool for converting images to ASCII art*
   
     [![Made with C](https://img.shields.io/badge/-Made%20with%20C-5C6BC0?logo=C)](https://github.com/JosefVesely/img2ascii)
