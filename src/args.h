@@ -13,10 +13,11 @@ void process_arguments(
     char **argv, 
     char **input_filepath, 
     char **output_filepath, 
-    bool *reverse_flag, 
-    bool *print_flag,
     char **characters,
     int *desired_width,
+    bool *reverse_flag, 
+    bool *print_flag,
+    bool *debug_flag,
     bool *resize_image
 ) {
     // Exit if no command line arguments are given
@@ -35,11 +36,12 @@ void process_arguments(
         { "chars",   required_argument, NULL, 'c' },
         { "print",   no_argument,       NULL, 'p' },
         { "reverse", no_argument,       NULL, 'r' },
+        { "debug",   no_argument,       NULL, 'd' },
         { 0, 0, 0, 0 }
     };
 
     int option;
-    const char *short_options = "hi:o:w:c:pr";
+    const char *short_options = "hi:o:w:c:prd";
 
     while ((option = getopt_long(argc, argv, short_options, long_options, NULL)) != EOF)
     {
@@ -76,8 +78,13 @@ void process_arguments(
         case 'r':
             *reverse_flag = true;
             break;
+
+        case 'd':
+            *debug_flag = true;
+            break;
         
         case '?':
+            printf("\nHint: Use the --help option to get help about the usage \n");
             exit(EXIT_FAILURE);
         }
     }
@@ -88,7 +95,7 @@ void process_arguments(
     }
 
     if (*output_filepath == NULL) {
-        *output_filepath = get_basename(*input_filepath);
+        *print_flag = true;
     }
 }
 

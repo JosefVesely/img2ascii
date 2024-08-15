@@ -15,11 +15,12 @@ int main(int argc, char **argv)
 
     char *input_filepath = NULL;
     char *output_filepath = NULL;
-    bool reverse_flag = false;
-    bool print_flag = false;
     char *characters = strdup("$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ");
     int desired_width = 0;
     int desired_height = 0;
+    bool reverse_flag = false;
+    bool print_flag = false;
+    bool debug_flag = false;
     bool resize_image = false;
 
     process_arguments(
@@ -27,10 +28,11 @@ int main(int argc, char **argv)
         argv, 
         &input_filepath, 
         &output_filepath, 
-        &reverse_flag, 
-        &print_flag,
         &characters,
         &desired_width,
+        &reverse_flag, 
+        &print_flag,
+        &debug_flag,
         &resize_image
     );
 
@@ -41,16 +43,15 @@ int main(int argc, char **argv)
     // Create an output file
 
     write_output(
-        argc, 
-        argv, 
         image,
         input_filepath, 
         output_filepath, 
-        print_flag,
-        reverse_flag, 
         characters, 
         desired_width,
-        desired_height
+        desired_height,
+        print_flag,
+        reverse_flag, 
+        debug_flag
     );
 
     return EXIT_SUCCESS;

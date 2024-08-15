@@ -43,84 +43,86 @@ uint8_t *load_image(const char *input_filepath, int *desired_width, int *desired
         *desired_width = width;
         *desired_height = height;
     }
-    
     return image;
 }
 
-void write_output(
-    int argc, 
-    char **argv, 
-    uint8_t *image,
-    char *input_filepath, 
-    char *output_filepath, 
-    bool print_flag,
-    bool reverse_flag, 
-    char *characters, 
-    int desired_width,
-    int desired_height
-) {
-    FILE *file_pointer = NULL;
-
-    file_pointer = fopen(output_filepath, "w");
-
-    if (file_pointer == NULL) {
-        fprintf(stderr, "Could not create an output file \n");
-        exit(EXIT_FAILURE);
-    }
-
+char *get_ascii_image(const uint8_t *image, int desired_width, int desired_height, char *characters, bool reverse_flag) 
+{
     if (reverse_flag) {
         reverse_string(characters);
     }
 
-    // Write some useful information to the file
+    // Print the ASCII art to the file
 
-    fprintf(file_pointer, "img2ascii ");
-
-    for (int i = 1; i < argc; i++) {
-        fprintf(file_pointer, "%s ", argv[i]);
-    }
+    int output_size = desired_height * desired_width + desired_height + 1;
+    char *output = (char *)malloc(output_size * sizeof(char));
 
     int characters_count = strlen(characters);
 
-    fprintf(
-        file_pointer,
-        "\n\n"
-        "Input: %s \n"
-        "Output: %s \n"
-        "Resolution: %ix%i \n"
-        "Characters (%i): \"%s\" \n\n",
-        input_filepath, 
-        output_filepath, 
-        desired_width, desired_height, 
-        characters_count, characters
-    );
-
-    // Write the ASCII art to the file
+    int ptr = 0; // Index of the output string
 
     for (int i = 0; i < desired_height * desired_width; i++) {
         int intensity = image[i];
 
         int character_index = intensity / (255 / (float)(characters_count - 1));
 
-        if (print_flag) {
-            putchar(characters[character_index]);
-        }
-        fputc(characters[character_index], file_pointer);
+        output[ptr] = characters[character_index];
 
         if ((i + 1) % desired_width == 0) {
-            if (print_flag) {
-                putchar('\n');
-            }
-            fputc('\n', file_pointer);
+            output[++ptr] = '\n';
         }
+        ptr++;
+    }
+    output[ptr] = '\0';
+
+    return output;
+}
+
+void write_output(
+    uint8_t *image,
+    char *input_filepath, 
+    char *output_filepath, 
+    char *characters, 
+    int desired_width,
+    int desired_height,
+    bool print_flag,
+    bool reverse_flag,
+    bool debug_flag
+) {
+    char *output = get_ascii_image(image, desired_width, desired_height, characters, reverse_flag);
+
+    if (debug_flag) {
+        printf(
+            "Input: %s \n"
+            "Output: %s \n"
+            "Resolution: %ix%i \n"
+            "Characters (%i): \"%s\" \n",
+            input_filepath, 
+            output_filepath != NULL ? output_filepath : "stdout",
+            desired_width, desired_height, 
+            strlen(characters), characters
+        );
     }
 
-    fclose(file_pointer);
+    if (print_flag) {
+        printf("%s", output);
+    }
 
-    printf("File saved as '%s' \n", output_filepath);
+    if (output_filepath != NULL) {
+        FILE *file_ptr = NULL;
+
+        file_ptr = fopen(output_filepath, "w");
+
+        if (file_ptr == NULL) {
+            fprintf(stderr, "Could not create an output file \n");
+            exit(EXIT_FAILURE);
+        }
+        fprintf(file_ptr, "%s", output);
+    }
 
     // Free memory
     stbi_image_free(image);
+    free(output);
     free(output_filepath);
     free(characters);
 }
