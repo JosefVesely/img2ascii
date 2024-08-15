@@ -18,7 +18,7 @@ git clone https://github.com/JosefVesely/img2ascii
 # Navigate to the project directory
 cd img2ascii
 
-# Compile the program using Make
+# Compile the program
 make
 ```
 
@@ -56,10 +56,19 @@ img2ascii [options] -i <FILE> [-o <FILE>]
 | <img src="images/aperture.jpg" width="300">      | <img src="examples/ascii-aperture.png" width="500"> |
 | `img2ascii -i images/aperture.jpg -w 50 -p`      |                                                  |
 
+## 🧪 Compatibility 
+
+The supported image file formats are **PNG**, **JPEG** and **BMP**
+
+This program has been tested and works on the following operating systems:
+
+- **Windows 11**
+- **Linux Mint 22**
+
 ## 🤝 Contributing
 
 Contributions are welcome! Feel free to open an issue or submit a pull request
 
 ## 📜 License
 
-This project is licensed under the [MIT License](https://github.com/JosefVesely/Image-to-ASCII/blob/main/LICENSE)
+This project is licensed under the [MIT License](https://github.com/JosefVesely/img2ascii/blob/main/LICENSE)
