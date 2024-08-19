@@ -54,7 +54,7 @@ uint8_t *load_image(const char *input_filepath, int *desired_width, int *desired
     return image;
 }
 
-void get_rgb(uint8_t *r, uint8_t *g, uint8_t *b, uint8_t *image, int image_width, int i)
+void get_rgb(uint8_t *r, uint8_t *g, uint8_t *b, uint8_t *image, int i)
 {
     const int channels = 3;
     uint8_t *pixel_offset = image + i * channels;
@@ -75,9 +75,9 @@ uint8_t get_intensity(uint8_t *image, int i)
     return (uint8_t)round(0.299 * r + 0.587 * g + 0.114 * b);
 }
 
-char *get_output_grayscale(uint8_t *image, int desired_width, int desired_height, char *characters, bool reverse_flag) 
+char *get_output_grayscale(uint8_t *image, int desired_width, int desired_height, char *characters, uint8_t flags) 
 {
-    if (reverse_flag) {
+    if (flags & REVERSE_FLAG) {
         reverse_string(characters);
     }
 
@@ -105,9 +105,9 @@ char *get_output_grayscale(uint8_t *image, int desired_width, int desired_height
     return output;
 }
 
-char *get_output_rgb(uint8_t *image, int width, int height, char *characters, bool reverse_flag) 
+char *get_output_rgb(uint8_t *image, int width, int height, char *characters, uint8_t flags) 
 {
-    if (reverse_flag) {
+    if (flags & REVERSE_FLAG) {
         reverse_string(characters);
     }
 
@@ -124,9 +124,9 @@ char *get_output_rgb(uint8_t *image, int width, int height, char *characters, bo
         int char_index = intensity / (255 / (float)(characters_count - 1));
 
         uint8_t r, g, b;
-        get_rgb(&r, &g, &b, image, width, i);
+        get_rgb(&r, &g, &b, image, i);
 
-        if (!(r == r_prev && g == g_prev && b == g_prev)) {
+        if (!(r == r_prev && g == g_prev && b == b_prev)) {
             ptr += snprintf(output + ptr, length - ptr, "\e[38;2;%i;%i;%im", r, g, b); // Append the ANSI code
         }
         r_prev = r;
@@ -151,20 +151,17 @@ void write_output(
     char *characters, 
     int width,
     int height,
-    bool grayscale_flag,
-    bool print_flag,
-    bool reverse_flag,
-    bool debug_flag
+    uint8_t flags
 ) {
     char *output = NULL;
 
-    if (grayscale_flag) {
-        output = get_output_grayscale(image, width, height, characters, reverse_flag);
+    if (flags & GRAYSCALE_FLAG) {
+        output = get_output_grayscale(image, width, height, characters, flags);
     } else {
-        output = get_output_rgb(image, width, height, characters, reverse_flag);
+        output = get_output_rgb(image, width, height, characters, flags);
     }
 
-    if (debug_flag) {
+    if (flags & DEBUG_FLAG) {
         printf(
             "Input: %s \n"
             "Output: %s \n"
@@ -173,11 +170,11 @@ void write_output(
             input_filepath, 
             output_filepath != NULL ? output_filepath : "stdout",
             width, height, 
-            strlen(characters), characters
+            (int)strlen(characters), characters
         );
     }
 
-    if (print_flag) {
+    if (flags & PRINT_FLAG) {
         printf("%s", output);
     }
 

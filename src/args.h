@@ -7,6 +7,12 @@
 
 #include "utils.h"
 
+enum {
+    GRAYSCALE_FLAG = 1 << 0,
+    REVERSE_FLAG   = 1 << 1,
+    PRINT_FLAG     = 1 << 2,
+    DEBUG_FLAG     = 1 << 3
+};
 
 void process_arguments(
     int argc, 
@@ -15,10 +21,7 @@ void process_arguments(
     char **output_filepath, 
     char **characters,
     int *desired_width,
-    bool *grayscale_flag,
-    bool *reverse_flag, 
-    bool *print_flag,
-    bool *debug_flag,
+    uint8_t *flags,
     bool *resize_image
 ) {
     // Exit if no command line arguments are given
@@ -69,29 +72,29 @@ void process_arguments(
 
         case 'c':
             if (strlen(optarg) != 0) {
-                *characters = (char*)realloc(*characters, strlen(optarg) + 1);
+                *characters = (char *)realloc(*characters, strlen(optarg) + 1);
                 strcpy(*characters, optarg);
             }
             break;
 
         case 'g':
-            *grayscale_flag = true;
+            *flags |= GRAYSCALE_FLAG;
             break;
 
         case 'p':
-            *print_flag = true;
+            *flags |= PRINT_FLAG;
             break;
 
         case 'r':
-            *reverse_flag = true;
+            *flags |= REVERSE_FLAG;
             break;
 
         case 'd':
-            *debug_flag = true;
+            *flags |= DEBUG_FLAG;
             break;
         
         case '?':
-            printf("\nHint: Use the \e[1m--help\e[0m option to get help about the usage \n");
+            printf("\nHint: Use the \e[1m--help\e[0m option to get help about the usage \n\n");
             exit(EXIT_FAILURE);
         }
     }
@@ -103,7 +106,7 @@ void process_arguments(
     }
 
     if (*output_filepath == NULL) {
-        *print_flag = true;
+        *flags |= PRINT_FLAG;
     }
 }
 

@@ -18,10 +18,7 @@ int main(int argc, char **argv)
     char *characters = strdup("$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ");
     int desired_width = 0;
     int desired_height = 0;
-    bool grayscale_flag = false;
-    bool reverse_flag = false;
-    bool print_flag = false;
-    bool debug_flag = false;
+    uint8_t flags = 0;
     bool resize_image = false;
 
     process_arguments(
@@ -31,10 +28,7 @@ int main(int argc, char **argv)
         &output_filepath,
         &characters,
         &desired_width,
-        &grayscale_flag,
-        &reverse_flag,
-        &print_flag,
-        &debug_flag,
+        &flags,
         &resize_image
     );
 
@@ -51,10 +45,7 @@ int main(int argc, char **argv)
         characters, 
         desired_width,
         desired_height,
-        grayscale_flag,
-        print_flag,
-        reverse_flag, 
-        debug_flag
+        flags
     );
 
     return EXIT_SUCCESS;
