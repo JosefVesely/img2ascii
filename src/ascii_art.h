@@ -8,15 +8,19 @@
 #include "../stb_image/stb_image_write.h"
 #include "../stb_image/stb_image_resize.h"
 
+#include <errno.h>
+#include <math.h>
 #include "utils.h"
 
 
 uint8_t *load_image(const char *input_filepath, int *desired_width, int *desired_height, bool *resize_image)
 {
-    // Load the image in grayscale
+    // Load the image
 
+    const int channels = STBI_rgb;
     int width, height;
-    uint8_t *image = stbi_load(input_filepath, &width, &height, NULL, STBI_grey);
+
+    uint8_t *image = stbi_load(input_filepath, &width, &height, NULL, channels);
 
     if (image == NULL) {
         fprintf(stderr, "Could not load image \n");
@@ -37,7 +41,11 @@ uint8_t *load_image(const char *input_filepath, int *desired_width, int *desired
         }
 
         *desired_height = height / (width / (float)*desired_width);
-        stbir_resize_uint8(image, width, height, width, image, *desired_width, *desired_height, *desired_width, STBI_grey);
+
+        stbir_resize_uint8(
+            image, width, height, width * channels, 
+            image, *desired_width, *desired_height, *desired_width * channels, channels
+        );
     }
     else {
         *desired_width = width;
@@ -46,13 +54,32 @@ uint8_t *load_image(const char *input_filepath, int *desired_width, int *desired
     return image;
 }
 
-char *get_ascii_image(const uint8_t *image, int desired_width, int desired_height, char *characters, bool reverse_flag) 
+void get_rgb(uint8_t *r, uint8_t *g, uint8_t *b, uint8_t *image, int image_width, int i)
+{
+    const int channels = 3;
+    uint8_t *pixel_offset = image + i * channels;
+
+    *r = pixel_offset[0];
+    *g = pixel_offset[1];
+    *b = pixel_offset[2];
+}
+
+uint8_t get_intensity(uint8_t *image, int i)
+{
+    const int channels = 3;
+    uint8_t *pixel_offset = image + i * channels;
+    uint8_t r = pixel_offset[0];
+    uint8_t g = pixel_offset[1];
+    uint8_t b = pixel_offset[2];
+
+    return (uint8_t)round(0.299 * r + 0.587 * g + 0.114 * b);
+}
+
+char *get_output_grayscale(uint8_t *image, int desired_width, int desired_height, char *characters, bool reverse_flag) 
 {
     if (reverse_flag) {
         reverse_string(characters);
     }
-
-    // Print the ASCII art to the file
 
     int output_size = desired_height * desired_width + desired_height + 1;
     char *output = (char *)malloc(output_size * sizeof(char));
@@ -62,11 +89,11 @@ char *get_ascii_image(const uint8_t *image, int desired_width, int desired_heigh
     int ptr = 0; // Index of the output string
 
     for (int i = 0; i < desired_height * desired_width; i++) {
-        int intensity = image[i];
+        int intensity = get_intensity(image, i);
 
-        int character_index = intensity / (255 / (float)(characters_count - 1));
+        int char_index = intensity / (255 / (float)(characters_count - 1));
 
-        output[ptr] = characters[character_index];
+        output[ptr] = characters[char_index];
 
         if ((i + 1) % desired_width == 0) {
             output[++ptr] = '\n';
@@ -78,18 +105,64 @@ char *get_ascii_image(const uint8_t *image, int desired_width, int desired_heigh
     return output;
 }
 
+char *get_output_rgb(uint8_t *image, int width, int height, char *characters, bool reverse_flag) 
+{
+    if (reverse_flag) {
+        reverse_string(characters);
+    }
+
+    int length = (height * width + height) * 21 + 1; // Length calculation
+    char *output = (char *)malloc(length * sizeof(char));
+
+    int characters_count = strlen(characters);
+    int ptr = 0; // Index of the output string
+
+    uint8_t r_prev, g_prev, b_prev;
+
+    for (int i = 0; i < height * width; i++) {
+        int intensity = get_intensity(image, i);
+        int char_index = intensity / (255 / (float)(characters_count - 1));
+
+        uint8_t r, g, b;
+        get_rgb(&r, &g, &b, image, width, i);
+
+        if (!(r == r_prev && g == g_prev && b == g_prev)) {
+            ptr += snprintf(output + ptr, length - ptr, "\e[38;2;%i;%i;%im", r, g, b); // Append the ANSI code
+        }
+        r_prev = r;
+        g_prev = g;
+        b_prev = b;
+
+        output[ptr++] = characters[char_index];
+
+        if ((i + 1) % width == 0) {
+            output[ptr++] = '\n';
+        }
+    }
+    snprintf(output + ptr, length - ptr, "\e[0m"); // Append the ANSI reset code
+    
+    return output;
+}
+
 void write_output(
     uint8_t *image,
     char *input_filepath, 
     char *output_filepath, 
     char *characters, 
-    int desired_width,
-    int desired_height,
+    int width,
+    int height,
+    bool grayscale_flag,
     bool print_flag,
     bool reverse_flag,
     bool debug_flag
 ) {
-    char *output = get_ascii_image(image, desired_width, desired_height, characters, reverse_flag);
+    char *output = NULL;
+
+    if (grayscale_flag) {
+        output = get_output_grayscale(image, width, height, characters, reverse_flag);
+    } else {
+        output = get_output_rgb(image, width, height, characters, reverse_flag);
+    }
 
     if (debug_flag) {
         printf(
@@ -99,7 +172,7 @@ void write_output(
             "Characters (%i): \"%s\" \n",
             input_filepath, 
             output_filepath != NULL ? output_filepath : "stdout",
-            desired_width, desired_height, 
+            width, height, 
             strlen(characters), characters
         );
     }
@@ -111,10 +184,11 @@ void write_output(
     if (output_filepath != NULL) {
         FILE *file_ptr = NULL;
 
+        errno = 0;
         file_ptr = fopen(output_filepath, "w");
 
         if (file_ptr == NULL) {
-            fprintf(stderr, "Could not create an output file \n");
+            fprintf(stderr, "Could not create an output file: %s \n", strerror(errno));
             exit(EXIT_FAILURE);
         }
         fprintf(file_ptr, "%s", output);
