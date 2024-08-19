@@ -15,6 +15,7 @@ void process_arguments(
     char **output_filepath, 
     char **characters,
     int *desired_width,
+    bool *grayscale_flag,
     bool *reverse_flag, 
     bool *print_flag,
     bool *debug_flag,
@@ -23,25 +24,27 @@ void process_arguments(
     // Exit if no command line arguments are given
 
     if (argc == 1) {
+        printf("No input file\n");
         show_usage();
         exit(EXIT_FAILURE);
     }
 
     struct option long_options[] =
     {
-        { "help",    no_argument,       NULL, 'h' },
-        { "input",   required_argument, NULL, 'i' },
-        { "output",  required_argument, NULL, 'o' },
-        { "width",   required_argument, NULL, 'w' },
-        { "chars",   required_argument, NULL, 'c' },
-        { "print",   no_argument,       NULL, 'p' },
-        { "reverse", no_argument,       NULL, 'r' },
-        { "debug",   no_argument,       NULL, 'd' },
+        { "help",      no_argument,       NULL, 'h' },
+        { "input",     required_argument, NULL, 'i' },
+        { "output",    required_argument, NULL, 'o' },
+        { "width",     required_argument, NULL, 'w' },
+        { "chars",     required_argument, NULL, 'c' },
+        { "grayscale", no_argument,       NULL, 'g' },
+        { "print",     no_argument,       NULL, 'p' },
+        { "reverse",   no_argument,       NULL, 'r' },
+        { "debug",     no_argument,       NULL, 'd' },
         { 0, 0, 0, 0 }
     };
 
     int option;
-    const char *short_options = "hi:o:w:c:prd";
+    const char *short_options = "hi:o:w:c:gprd";
 
     while ((option = getopt_long(argc, argv, short_options, long_options, NULL)) != EOF)
     {
@@ -71,6 +74,10 @@ void process_arguments(
             }
             break;
 
+        case 'g':
+            *grayscale_flag = true;
+            break;
+
         case 'p':
             *print_flag = true;
             break;
@@ -84,12 +91,13 @@ void process_arguments(
             break;
         
         case '?':
-            printf("\nHint: Use the --help option to get help about the usage \n");
+            printf("\nHint: Use the \e[1m--help\e[0m option to get help about the usage \n");
             exit(EXIT_FAILURE);
         }
     }
 
     if (*input_filepath == NULL) {
+        printf("No input file\n");
         show_usage();
         exit(EXIT_FAILURE);
     }
