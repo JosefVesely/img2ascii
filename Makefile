@@ -1,9 +1,5 @@
-SRC = src/main.c \
-			src/args.c \
-			src/color.c \
-			src/utils.c \
-			src/error.c \
-			src/ascii_art.c
+SRC	= src/main.c src/args.c src/color.c src/utils.c src/error.c \
+	src/ascii_art.c
 BIN = img2ascii
 CC = gcc
 CFLAGS = -Wall -Wextra
@@ -14,4 +10,3 @@ all:
 
 clean:
 	$(RM) $(BIN) $(BIN).exe
-

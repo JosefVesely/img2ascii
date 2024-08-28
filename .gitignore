@@ -3,3 +3,4 @@ build/
 tests/
 *.exe
 *.txt
+*.out
