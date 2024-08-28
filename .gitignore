@@ -1,4 +1,6 @@
 .vscode/
+build/
 tests/
 *.exe
 *.txt
+*.out

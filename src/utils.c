@@ -1,12 +1,9 @@
-#ifndef UTILS_H
-#define UTILS_H
-
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
+#include "utils.h"
 
-void reverse_string(char *str) 
+void reverse_string(char *str)
 {
     int len = strlen(str);
 
@@ -35,4 +32,3 @@ void show_usage(void)
     );
 }
 
-#endif // UTILS_H
