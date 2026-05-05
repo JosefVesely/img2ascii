@@ -40,16 +40,21 @@ uint8_t *load_image(const char *input_filepath, int *desired_width, int *desired
             exit(EXIT_FAILURE);
         }
 
-        *desired_height = height / (width / (float)*desired_width);
+        *desired_height = height / (width / (float)*desired_width) / 2;
 
         stbir_resize_uint8(
-            image, width, height, width * channels, 
+            image, width, height, width * channels,
             image, *desired_width, *desired_height, *desired_width * channels, channels
         );
     }
     else {
         *desired_width = width;
-        *desired_height = height;
+        *desired_height = height / 2;
+
+        stbir_resize_uint8(
+            image, width, height, width * channels,
+            image, *desired_width, *desired_height, *desired_width * channels, channels
+        );
     }
     return image;
 }
